@@ -19,15 +19,18 @@ function App() {
         }
       }, [])
 
-      function addTask(task) {
+     useEffect(() => {
+        localStorage.setItem('data', JSON.stringify(tasks))
+     }, [tasks])
+
+      function addTask(task, setError) {
         if(task === '') {
-            document.querySelector('.task_inp').classList.add('_error')
+          setError('form-control task_inp _error')
         } else{
         let count = tasks.length;
         let arr = tasks.slice();
         arr.push({id: count + 1, title: task, done: false});
-        setTasks(arr);
-        localStorage.setItem('data',JSON.stringify(arr))
+        setTasks(arr);      
         }
       }
 
@@ -37,8 +40,7 @@ function App() {
             if(item.id === +id)
             item.done = true;
         })
-        setTasks(arr);
-        localStorage.setItem('data',JSON.stringify(arr))
+        setTasks(arr);        
       }
 
       function removeTask(id) {
@@ -48,15 +50,15 @@ function App() {
           arr.push(item)
           }
         })
-       setTasks(arr);
-       localStorage.setItem('data',JSON.stringify(arr))
+       setTasks(arr);     
       }
 
       return (
       <div className = 'container'>
         <h1>ToDoList</h1>
-        <Task addTask = {addTask}/>
-        <List list = {tasks}
+        <Task  addTask = {addTask}/>
+        <List 
+          list = {tasks}
           taskComplete = {taskComplete}  
           removeTask = {removeTask}      
           />
